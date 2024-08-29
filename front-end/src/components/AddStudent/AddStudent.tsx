@@ -6,20 +6,31 @@ export default function AddStudent() {
     name: '',
     email: ''
   })
+  const [errorMessage, setErrorMessage] = useState('')
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     axios
       .post('http://localhost:8081/students', values)
       .then((response) => {
         console.log(response)
+        if (response.data.Error) {
+          setErrorMessage(response.data.Error)
+          console.log(response.data.Error) // Set error message
+        } else {
+          setErrorMessage('') // Clear error message if successful
+          console.log(response)
+          // Optionally reset form fields after successful submission
+          setValues({ name: '', email: '' })
+        }
       })
       .catch((error) => {
         console.log(error)
+        setErrorMessage('An error occurred') // Set a generic error message
       })
   }
   return (
     <div className='container mx-auto'>
-      <form className='mt-6' onSubmit={handleSubmit}>
+      <form className='mt-12' onSubmit={handleSubmit}>
         <div className='group relative z-0 mb-6 w-full'>
           <input
             type='text'
@@ -32,16 +43,16 @@ export default function AddStudent() {
           />
           <label
             htmlFor='floating_email'
-            className='absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500'
+            className='absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500'
           >
             Email address
           </label>
-          {/* {errorForm && (
+          {errorMessage && (
             <p className='mt-2 text-sm text-red-600'>
               <span className='font-medium'>Lỗi! </span>
-              {errorForm.email}
+              {errorMessage}
             </p>
-          )} */}
+          )}
         </div>
 
         <div className='group relative z-0 mb-6 w-full'>
@@ -56,7 +67,7 @@ export default function AddStudent() {
           />
           <label
             htmlFor='first_name'
-            className='absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500'
+            className='absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500'
           >
             Name
           </label>

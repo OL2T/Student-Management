@@ -32,12 +32,11 @@ app.post("/students", (req, res) => {
   const checkEmailSql = "SELECT * FROM students WHERE Email = ?";
   db.query(checkEmailSql, [email], (err, result) => {
     if (err) {
-      return res.json({ Message: "Error in checking email server" });
+      return res.json({ Error: "Error in checking email server" });
     }
-    console.log(result);
     if (result.length > 0) {
       // Email already exists
-      return res.json({ Message: "Email already in use" });
+      return res.json({ Error: "Email already exists" });
     } else {
       // Proceed to insert the new student
       const insertSql = "INSERT INTO students (`Name`, `Email`) VALUES (?)";
